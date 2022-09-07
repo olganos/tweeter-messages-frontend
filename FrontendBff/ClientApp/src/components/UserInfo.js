@@ -7,7 +7,7 @@ export default function UserInfo() {
 
     if (isLoading)
         return <div>Loading...</div>
-
+console.log(process.env);
     return (
         <div className='d-flex align-items-center user-info'>
             {
@@ -19,8 +19,7 @@ export default function UserInfo() {
                             Login
                         </a>
                         <a
-                            // todo: move to env
-                            href="https://localhost:5001/Account/Register"
+                            href={process.env.REACT_APP_AUTH_SERVER_REGISTRATION_URI}
                         >
                             Register
                         </a>
