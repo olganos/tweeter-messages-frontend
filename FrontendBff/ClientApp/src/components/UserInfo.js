@@ -7,7 +7,7 @@ export default function UserInfo() {
 
     if (isLoading)
         return <div>Loading...</div>
-console.log(process.env);
+
     return (
         <div className='d-flex align-items-center user-info'>
             {
@@ -18,11 +18,13 @@ console.log(process.env);
                         >
                             Login
                         </a>
+                        {/* 
+                        todo: read more about redirection. doesn't work when I try to create redirection url manually
                         <a
-                            href={process.env.REACT_APP_AUTH_SERVER_REGISTRATION_URI}
+                            href=
                         >
                             Register
-                        </a>
+                        </a> */}
                     </>
                 ) : (
                     <>

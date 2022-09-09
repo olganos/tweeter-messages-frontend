@@ -1,70 +1,90 @@
 using Duende.Bff.Yarp;
+using IdentityModel.Client;
 using System.IdentityModel.Tokens.Jwt;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateBootstrapLogger();
 
-builder.Services.AddAuthorization();
+Log.Information("Starting up");
 
-builder.Services
-    .AddBff()
-    .AddRemoteApis();
+try
+{
+    var builder = WebApplication.CreateBuilder(args);
 
-JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-builder.Services
-    .AddAuthentication(options =>
+    builder.Services.AddAuthorization();
+
+    builder.Services
+        .AddBff()
+        .AddRemoteApis();
+
+    JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+    builder.Services
+        .AddAuthentication(options =>
+        {
+            options.DefaultScheme = "Cookies";
+            options.DefaultChallengeScheme = "oidc";
+            options.DefaultSignOutScheme = "oidc";
+        })
+        .AddCookie("Cookies", options =>
+        {
+            options.Cookie.SameSite = SameSiteMode.Strict;
+        })
+        .AddOpenIdConnect("oidc", options =>
+        {
+            options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_URI")
+                ?? builder.Configuration.GetValue<string>("IdentityServerSettings:ServerUri");
+            options.ClientId = "react_bff";
+            options.ClientSecret = "secret";
+            options.ResponseType = "code";
+            options.Scope.Add("tweeter-api");
+            options.Scope.Add("openid");
+            options.Scope.Add("profile");
+            options.Scope.Add("verification");
+            options.Scope.Add("fullname");
+            options.SaveTokens = true;
+            options.GetClaimsFromUserInfoEndpoint = true;
+        });
+
+    var app = builder.Build();
+
+    if (app.Environment.IsDevelopment())
     {
-        options.DefaultScheme = "Cookies";
-        options.DefaultChallengeScheme = "oidc";
-        options.DefaultSignOutScheme = "oidc";
-    })
-    .AddCookie("Cookies", options =>
+        app.UseDeveloperExceptionPage();
+    }
+
+    if (!app.Environment.IsDevelopment())
     {
-        options.Cookie.SameSite = SameSiteMode.Strict;
-    })
-    .AddOpenIdConnect("oidc", options =>
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+    }
+
+    app.UseHttpsRedirection();
+    app.UseStaticFiles();
+    app.UseRouting();
+
+    app.UseAuthentication();
+
+    app.UseBff();
+
+    app.UseAuthorization();
+
+    app.UseEndpoints(endpoints =>
     {
-        options.Authority = Environment.GetEnvironmentVariable("IDENTITY_SERVER_URI")
-            ?? builder.Configuration.GetValue<string>("IdentityServerSettings:ServerUri");
-        options.ClientId = "react_bff";
-        options.ClientSecret = "secret";
-        options.ResponseType = "code";
-        options.Scope.Add("tweeter-api");
-        options.Scope.Add("openid");
-        options.Scope.Add("profile");
-        options.Scope.Add("verification");
-        options.Scope.Add("fullname");
-        options.SaveTokens = true;
-        options.GetClaimsFromUserInfoEndpoint = true;
+        endpoints.MapBffManagementEndpoints();
     });
 
-var app = builder.Build();
+    app.MapFallbackToFile("index.html"); ;
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
+    app.Run();
 }
-
-if (!app.Environment.IsDevelopment())
+catch (Exception ex) when (ex.GetType().Name is not "StopTheHostException") // https://github.com/dotnet/runtime/issues/60600
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    Log.Fatal(ex, "Unhandled exception");
 }
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-
-app.UseAuthentication();
-
-app.UseBff();
-
-app.UseAuthorization();
-
-app.UseEndpoints(endpoints =>
+finally
 {
-    endpoints.MapBffManagementEndpoints();
-});
-
-app.MapFallbackToFile("index.html"); ;
-
-app.Run();
+    Log.Information("Shut down complete");
+    Log.CloseAndFlush();
+}
