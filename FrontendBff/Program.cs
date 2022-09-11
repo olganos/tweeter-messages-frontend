@@ -2,6 +2,9 @@ using Duende.Bff.Yarp;
 using IdentityModel.Client;
 using System.IdentityModel.Tokens.Jwt;
 using Serilog;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Duende.Bff;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -13,7 +16,7 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.AddAuthorization();
+    builder.Services.AddControllers();
 
     builder.Services
         .AddBff()
@@ -70,9 +73,19 @@ try
 
     app.UseAuthorization();
 
+    app.MapControllers()
+        .RequireAuthorization()
+        .AsBffApiEndpoint();
+
     app.UseEndpoints(endpoints =>
     {
         endpoints.MapBffManagementEndpoints();
+
+        endpoints.MapRemoteBffApiEndpoint("/write", "https://localhost:5050/write")
+            .RequireAccessToken(TokenType.User);
+
+        endpoints.MapRemoteBffApiEndpoint("/read", "https://localhost:5050/read")
+           .RequireAccessToken(TokenType.User);
     });
 
     app.MapFallbackToFile("index.html"); ;
