@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Layout } from './components/Layout';
-import './custom.css';
+import { Layout } from './components/layout/Layout';
+import './custom.scss';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AllUsers from './pages/all-users/AllUsers';

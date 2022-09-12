@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import NavMenu from './NavMenu';
+import NavMenu from '../header/NavMenu';
 
 export function Layout() {
   return (

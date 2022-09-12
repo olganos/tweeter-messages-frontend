@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAuthUser } from '../services/authService';
-import './UserInfo.css';
+import { useAuthUser } from '../../services/authService';
+import styles from './UserInfo.module.scss';
 
 export default function UserInfo() {
     const { username, logoutUrl, isLoading } = useAuthUser();
@@ -9,7 +9,7 @@ export default function UserInfo() {
         return <div>Loading...</div>
 
     return (
-        <div className='d-flex align-items-center user-info'>
+        <div className={`d-flex align-items-center ${styles.userInfo}`}>
             {
                 !username ? (
                     <>
