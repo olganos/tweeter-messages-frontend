@@ -6,7 +6,7 @@ export function Layout() {
   return (
     <>
       <NavMenu />
-      <main>
+      <main className="px-4">
         <Outlet />
       </main>
     </>

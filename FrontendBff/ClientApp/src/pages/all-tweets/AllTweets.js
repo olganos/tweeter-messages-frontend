@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import TweetList from '../../components/tweets/TweetList';
 
 export default function AllTweets() {
     const [read, setRead] = useState([]);
-    
-    useEffect(() => {
-        readApi();
-    }, []);
 
     const readApi = async () => {
         var req = new Request("read/api/v1.0/tweets/all", {
@@ -22,19 +19,20 @@ export default function AllTweets() {
                 data = await resp.json();
             }
             console.log("Remote API Result: " + resp.status, data);
-            setRead(JSON.stringify(data));
+            setRead(data);
         } catch (e) {
             console.log("error calling remote API");
         }
     }
 
+    useEffect(() => {
+        readApi();
+    }, []);
+
     return (
         <>
-            <h1>All users</h1>
-            <p>
-                Choose a user whose tweets you want to read
-            </p>
-            {read}
+            <h1>All tweets</h1>
+            <TweetList data={read} />
         </>
     );
 }
