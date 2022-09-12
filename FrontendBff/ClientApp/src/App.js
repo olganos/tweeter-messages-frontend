@@ -5,6 +5,7 @@ import './custom.scss';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AllUsers from './pages/all-users/AllUsers';
+import AllTweets from './pages/all-tweets/AllTweets';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -16,6 +17,7 @@ export default class App extends Component {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<div>Hello</div>} />
                         <Route path="/all-users" element={<AllUsers />} />
+                        <Route path="/all-tweets" element={<AllTweets />} />
                     </Route>
                     {/* <Route element={<Layout2 />}>
         <Route path="/page3" element={<Page3 />} />
