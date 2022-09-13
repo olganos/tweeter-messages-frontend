@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import Tweet from "./Tweet";
 
 export default function TweetList({ data }) {
@@ -11,3 +13,16 @@ export default function TweetList({ data }) {
         </>
     )
 }
+
+TweetList.defaultProps = {
+    data: []
+};
+
+TweetList.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.objectOf({
+        id: PropTypes.string,
+        userName: PropTypes.string,
+        created: PropTypes.string,
+        text: PropTypes.string
+    }))
+};
