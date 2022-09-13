@@ -6,6 +6,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AllUsers from './pages/all-users/AllUsers';
 import AllTweets from './pages/all-tweets/AllTweets';
+import OneTweet from './pages/one-tweet/OneTweet';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -17,12 +18,13 @@ export default class App extends Component {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<div>Hello</div>} />
                         <Route path="/all-users" element={<AllUsers />} />
-                        <Route path="/all-tweets" element={<AllTweets />} />
+                        <Route path="/all-tweets" element={<AllTweets />}>
+                            {/* todo: maybe not create a separate page, but show one tweet on the right.
+                            in this case I'll need the nested rout and outlet inside AllTweets */}
+                            {/* <Route path=":tweetId" element={<OneTweet />} /> */}
+                        </Route>
+                        <Route path="/all-tweets/:tweetId" element={<OneTweet />} />
                     </Route>
-                    {/* <Route element={<Layout2 />}>
-        <Route path="/page3" element={<Page3 />} />
-        <Route path="/page4" element={<Page4 />} />
-      </Route> */}
                 </Routes>
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>

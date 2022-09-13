@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Moment from 'react-moment';
 
 export default function Tweet({ data }) {
     if (!data)
@@ -6,10 +8,26 @@ export default function Tweet({ data }) {
 
     return (
         <>
-            <div>id: {data.id}</div>
-            <div>user: {data.userName}</div>
-            <div>created: {data.created}</div>
-            <div>{data.text}</div>
+            <div>
+                <Link
+                    to={`/all-tweets/${data.id}`}
+                >
+                    {data.id}
+                </Link>
+            </div>
+            <div>@{data.userName}</div>
+            <div>
+                posted at
+                &nbsp;
+                <Moment
+                    format="DD.MM.YYYY HH:mm:ss"
+                >
+                    {data.created}
+                </Moment>
+            </div>
+            <p>
+                {data.text}
+            </p>
         </>
     )
 }
@@ -19,7 +37,7 @@ Tweet.defaultProps = {
 };
 
 Tweet.propTypes = {
-    data: PropTypes.objectOf({
+    data: PropTypes.shape({
         id: PropTypes.string,
         userName: PropTypes.string,
         created: PropTypes.string,

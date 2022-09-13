@@ -26,6 +26,7 @@ export default function Header() {
             <NavLink
               to="/all-users"
               style={getNavStyle}
+              end
             >
               All users
             </NavLink>
@@ -34,6 +35,7 @@ export default function Header() {
             <NavLink
               to="/all-tweets" //todo: Tweets (all, but rectric somehow - by pages of load dinamically)
               style={getNavStyle}
+              end
             >
               All tweets
             </NavLink>
