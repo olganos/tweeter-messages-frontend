@@ -1,12 +1,13 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input, InputGroup, Button } from 'reactstrap';
+import { Input, InputGroup, Button, Form } from 'reactstrap';
 
 export default function SearchUser() {
   const inputSearch = useRef(null);
   const navigate = useNavigate();
 
-  const onSearchClick = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     if (!inputSearch.current.value) {
       return;
     }
@@ -14,18 +15,19 @@ export default function SearchUser() {
   };
 
   return (
-    <InputGroup style={{ "width": "250px" }} size="sm">
-      <Input
-        placeholder="user name"
-        innerRef={inputSearch}
-      />
-      <Button
-        color="secondary"
-        outline
-        onClick={onSearchClick}
-      >
-        Search
-      </Button>
-    </InputGroup>
+    <Form onSubmit={onSubmit}>
+      <InputGroup style={{ "width": "250px" }} size="sm">
+        <Input
+          placeholder="user name"
+          innerRef={inputSearch}
+        />
+        <Button
+          color="secondary"
+          outline
+        >
+          Search
+        </Button>
+      </InputGroup>
+    </Form>
   );
 }
