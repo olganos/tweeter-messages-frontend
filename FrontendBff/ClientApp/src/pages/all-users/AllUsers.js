@@ -3,15 +3,13 @@ import UserList from '../../components/users/UserList';
 
 export default function AllUsers() {
     const [users, setUsers] = useState([]);
-    const [read, setRead] = useState([]);
-    const [test, setTest] = useState([]);
 
     useEffect(() => {
         usersApi();
     }, []);
 
     const usersApi = async () => {
-        var req = new Request("users", {
+        var req = new Request("read/api/v1.0/tweets/users/all", {
             headers: new Headers({
                 "X-CSRF": "1",
             }),

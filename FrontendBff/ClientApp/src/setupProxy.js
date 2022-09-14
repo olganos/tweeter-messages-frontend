@@ -4,7 +4,7 @@ const { env } = require('process');
 const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
   env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:30679';
 
-const context = ["/bff", "/signin-oidc", "/signout-callback-oidc", "/write", "/read", "/users"];
+const context = ["/bff", "/signin-oidc", "/signout-callback-oidc", "/write", "/read"];
 
 module.exports = function(app) {
   const appProxy = createProxyMiddleware(context, {

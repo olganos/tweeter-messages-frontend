@@ -86,9 +86,6 @@ try
 
         endpoints.MapRemoteBffApiEndpoint("/read", "https://localhost:5050/read")
            .RequireAccessToken(TokenType.User);
-
-        endpoints.MapRemoteBffApiEndpoint("/users", "https://localhost:5050/api/users")
-            .RequireAccessToken(TokenType.User);
     });
 
     app.MapFallbackToFile("index.html"); ;
