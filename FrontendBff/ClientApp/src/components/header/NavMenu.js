@@ -1,18 +1,28 @@
-import { NavLink, Link } from 'react-router-dom';
+import { useRef } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Navbar, NavbarBrand, Nav, NavItem, Input, InputGroup, Button } from 'reactstrap';
 import styles from './NavMenu.module.scss';
 import UserInfo from './UserInfo';
 
 export default function Header() {
-  const activeStyle = {
+  const inputSearch = useRef(null);
+  const navigate = useNavigate();
+
+  const onSearchClick = () => {
+    if (!inputSearch.current.value) {
+      return;
+    }
+    navigate(`/search-users/${inputSearch.current.value}`);
+  };
+
+  const navActiveStyle = {
     textDecoration: "none",
     color: "black",
     cursor: "default"
   }
 
   const getNavStyle = ({ isActive }) => {
-    console.log(isActive);
-    return isActive ? activeStyle : undefined;
+    return isActive ? navActiveStyle : undefined;
   };
 
   return (
@@ -22,11 +32,12 @@ export default function Header() {
         <InputGroup style={{ "width": "250px" }} size="sm">
           <Input
             placeholder="user name"
+            innerRef={inputSearch}
           />
           <Button
             color="secondary"
             outline
-            onClick={(e) => console.log(e)}
+            onClick={onSearchClick}
           >
             Search
           </Button>

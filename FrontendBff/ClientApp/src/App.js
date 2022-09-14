@@ -8,6 +8,7 @@ import AllUsers from './pages/all-users/AllUsers';
 import AllTweets from './pages/all-tweets/AllTweets';
 import OneTweet from './pages/one-tweet/OneTweet';
 import OneUser from './pages/one-user/OneUser';
+import SearchUsers from './pages/search-users/SearchUsers';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -20,6 +21,7 @@ export default class App extends Component {
                         <Route index element={<div>Hello</div>} />
                         <Route path="/all-users" element={<AllUsers />} />
                         <Route path="/all-users/:userName" element={<OneUser />} />
+                        <Route path="/search-users/:userName" element={<SearchUsers />} />
                         <Route path="/all-tweets" element={<AllTweets />}>
                             {/* todo: maybe not create a separate page, but show one tweet on the right.
                             in this case I'll need the nested rout and outlet inside AllTweets */}
