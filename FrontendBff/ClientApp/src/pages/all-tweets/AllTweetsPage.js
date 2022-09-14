@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
 
 export default function AllTweetsPage() {
@@ -32,7 +34,14 @@ export default function AllTweetsPage() {
     return (
         <>
             <h1>All tweets</h1>
-            <TweetList data={read} />
+            <Row>
+                <Col>
+                    <TweetList data={read} />
+                </Col>
+                <Col>
+                    <Outlet />
+                </Col>
+            </Row>
         </>
     );
 }
