@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TweetList from '../../components/tweets/TweetList';
 
-export default function AllTweets() {
+export default function AllTweetsPage() {
     const [read, setRead] = useState([]);
 
     const readApi = async () => {

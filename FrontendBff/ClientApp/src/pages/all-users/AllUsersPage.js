@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import UserList from '../../components/users/UserList';
 
-export default function SearchUsers() {
+export default function AllUsersPage() {
     const [users, setUsers] = useState([]);
-    const { userName } = useParams();
 
     useEffect(() => {
         usersApi();
-    }, [userName]);
+    }, []);
 
     const usersApi = async () => {
-        var req = new Request(`read/api/v1.0/tweets/user/search/${userName}`, {
+        var req = new Request("read/api/v1.0/tweets/users/all", {
             headers: new Headers({
                 "X-CSRF": "1",
             }),
@@ -24,6 +22,7 @@ export default function SearchUsers() {
             if (resp.ok) {
                 data = await resp.json();
             }
+            console.log("Remote API Result: " + resp.status, data);
             setUsers(data);
         } catch (e) {
             console.log("error calling remote API");
@@ -32,7 +31,7 @@ export default function SearchUsers() {
 
     return (
         <>
-            <h1>search results for "{userName}"</h1>
+            <h1>All users</h1>
             <p>
                 Choose a user whose tweets you want to read
             </p>

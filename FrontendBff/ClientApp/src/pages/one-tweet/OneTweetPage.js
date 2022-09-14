@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import Tweet from '../../components/tweets/Tweet';
 
-export default function OneTweet() {
+export default function OneTweetPage() {
     const { tweetId } = useParams();
     const [read, setRead] = useState([]);
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import TweetList from '../../components/tweets/TweetList';
 
-export default function OneUser() {
+export default function OneUserPage() {
     const { userName } = useParams();
     const [userTweets, setUserTweets] = useState([]);
 
