@@ -1,5 +1,5 @@
 import React, { } from 'react';
-import { Input, FormGroup, Button, Card, CardHeader, CardBody } from 'reactstrap';
+import { Input, FormGroup, Button, Card, CardHeader, CardBody, CardSubtitle } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuthUser } from '../../../services/authService';
@@ -49,10 +49,12 @@ export default function CreateReplyForm({ tweetId }) {
 
     return (
         <Card>
-            <CardHeader>
-                Add reply
-            </CardHeader>
             <CardBody>
+                <CardSubtitle
+                    className="mb-2"
+                >
+                    Add reply
+                </CardSubtitle>
                 <Formik
                     initialValues={{
                         text: '',
