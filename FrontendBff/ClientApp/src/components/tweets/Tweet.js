@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
-export default function Tweet({ data }) {
+export default function Tweet({ data, showUserUri }) {
     if (!data)
         return;
 
@@ -10,7 +10,7 @@ export default function Tweet({ data }) {
         <>
             <div>
                 <Link
-                    to={`/all-tweets/${data.id}`}
+                    to={showUserUri ? `/all-users/${data.userName}/${data.id}` : `/all-tweets/${data.id}`}
                 >
                     {data.id}
                 </Link>
@@ -38,7 +38,8 @@ export default function Tweet({ data }) {
 }
 
 Tweet.defaultProps = {
-    data: null
+    data: null,
+    showUserUri: false
 };
 
 Tweet.propTypes = {
@@ -47,5 +48,6 @@ Tweet.propTypes = {
         userName: PropTypes.string,
         created: PropTypes.string,
         text: PropTypes.string
-    })
+    }),
+    showUserUri: PropTypes.bool,
 };

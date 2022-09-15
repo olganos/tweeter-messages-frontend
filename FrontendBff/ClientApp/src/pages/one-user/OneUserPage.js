@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
+import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
 
 export default function OneUserPage() {
@@ -20,7 +21,6 @@ export default function OneUserPage() {
             if (resp.ok) {
                 data = await resp.json();
             }
-            console.log("Remote API Result: " + resp.status, data);
             setUserTweets(data);
         } catch (e) {
             console.log("error calling remote API");
@@ -33,8 +33,18 @@ export default function OneUserPage() {
 
     return (
         <>
-            <h1>@{userName}'s tweets</h1>
-            <TweetList data={userTweets} />
+            <h1>@{userName}'s {userTweets.length} tweets</h1>
+            <Row>
+                <Col>
+                    <TweetList
+                        data={userTweets}
+                        showUserUri={true}
+                    />
+                </Col>
+                <Col>
+                    <Outlet />
+                </Col>
+            </Row>
         </>
     );
 }

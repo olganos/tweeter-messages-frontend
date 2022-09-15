@@ -5,7 +5,7 @@ import TweetList from '../../components/tweets/TweetList';
 import CreateTweetForm from '../../components/tweets/CreateTweetForm';
 
 export default function AllTweetsPage() {
-    const [read, setRead] = useState([]);
+    const [tweets, setTweets] = useState([]);
 
     const readApi = async () => {
         var req = new Request("read/api/v1.0/tweets/all", {
@@ -21,8 +21,7 @@ export default function AllTweetsPage() {
             if (resp.ok) {
                 data = await resp.json();
             }
-            console.log("Remote API Result: " + resp.status, data);
-            setRead(data);
+            setTweets(data);
         } catch (e) {
             console.log("error calling remote API");
         }
@@ -34,13 +33,13 @@ export default function AllTweetsPage() {
 
     return (
         <>
-            <h1>All tweets</h1>
+            <h1>All {tweets.length} tweets</h1>
             <Row>
                 <Col>
                     <p>
                         <CreateTweetForm />
                     </p>
-                    <TweetList data={read} />
+                    <TweetList data={tweets} />
                 </Col>
                 <Col>
                     <Outlet />

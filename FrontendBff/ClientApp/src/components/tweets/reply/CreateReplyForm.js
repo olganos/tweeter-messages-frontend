@@ -1,4 +1,5 @@
 import React, { } from 'react';
+import PropTypes from 'prop-types';
 import { Input, FormGroup, Button, Card, CardHeader, CardBody, CardSubtitle } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -107,3 +108,7 @@ export default function CreateReplyForm({ tweetId }) {
         </Card>
     );
 }
+
+CreateReplyForm.propTypes = {
+    tweetId: PropTypes.string
+};

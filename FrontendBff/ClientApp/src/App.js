@@ -20,11 +20,13 @@ export default class App extends Component {
                     <Route path="/" element={<Layout />}>
                         <Route index element={<div>Hello</div>} />
                         <Route path="/all-users" element={<AllUsersPage />} />
-                        <Route path="/all-users/:userName" element={<OneUserPage />} />
+                        <Route path="/all-users/:userName" element={<OneUserPage />}>
+                            <Route path=":tweetId" element={<TweetFullView />} />
+                        </Route>
                         <Route path="/search-users/:userName" element={<SearchUsersPage />} />
                         <Route path="/all-tweets" element={<AllTweetsPage />}>
-                            <Route path="/all-tweets/:tweetId" element={<TweetFullView />} />
-                        </Route>                        
+                            <Route path=":tweetId" element={<TweetFullView />} />
+                        </Route>
                     </Route>
                 </Routes>
                 <ReactQueryDevtools initialIsOpen={false} />

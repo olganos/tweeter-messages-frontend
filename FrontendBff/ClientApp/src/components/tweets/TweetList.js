@@ -3,7 +3,7 @@ import { ListGroup, ListGroupItem, Badge } from 'reactstrap';
 
 import Tweet from "./Tweet";
 
-export default function TweetList({ data }) {
+export default function TweetList({ data, showUserUri }) {
     return (
         <ListGroup>
             {data.map(item =>
@@ -11,7 +11,10 @@ export default function TweetList({ data }) {
                     className="justify-content-between"
                     key={item.id}
                 >
-                    <Tweet data={item} />
+                    <Tweet
+                        data={item}
+                        showUserUri={showUserUri}
+                    />
                 </ListGroupItem>
             )}
         </ListGroup>
@@ -19,7 +22,8 @@ export default function TweetList({ data }) {
 }
 
 TweetList.defaultProps = {
-    data: []
+    data: [],
+    showUserUri: false
 };
 
 TweetList.propTypes = {
@@ -28,5 +32,6 @@ TweetList.propTypes = {
         userName: PropTypes.string,
         created: PropTypes.string,
         text: PropTypes.string
-    }))
+    })),
+    showUserUri: PropTypes.bool,
 };
