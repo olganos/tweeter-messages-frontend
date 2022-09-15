@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ReplyList from './reply/ReplyList';
 import CreateReplyForm from './reply/CreateReplyForm';
+import EditTweetModal from '../modals/EditTweetModal';
 
 export default function TweetFullView() {
     const { tweetId } = useParams();
-    const [tweet, setTweet] = useState([]);
+    const [tweet, setTweet] = useState({});
 
     const readApi = async () => {
         var req = new Request("read/api/v1.0/tweets/all", {
@@ -35,7 +36,16 @@ export default function TweetFullView() {
 
     return (
         <>
-            <div>@{tweet.userName}</div>
+            <div
+                className="d-flex justify-content-between"
+            >
+                @{tweet.userName}
+                <div>
+                    <EditTweetModal
+                        tweet={tweet}
+                    />
+                </div>
+            </div>
             <div>
                 posted at
                 &nbsp;

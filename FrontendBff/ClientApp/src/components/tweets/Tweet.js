@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { Button } from 'reactstrap';
-import { PencilIcon, HeartIcon } from '@primer/octicons-react'
+import { HeartIcon } from '@primer/octicons-react'
 
 export default function Tweet({ data, showUserUri }) {
     if (!data)
@@ -17,14 +17,6 @@ export default function Tweet({ data, showUserUri }) {
                     {data.id}
                 </Link>
                 <div>
-                    <Button
-                        color="primary"
-                        outline
-                        size="sm"
-                        className="me-1"
-                    >
-                        <PencilIcon size={16} />
-                    </Button>
                     <Button
                         color="primary"
                         outline

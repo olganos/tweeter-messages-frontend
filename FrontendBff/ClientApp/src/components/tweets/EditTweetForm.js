@@ -10,19 +10,20 @@ const validationSchema = Yup.object().shape({
     text: Yup.string()
         .max(144, 'No more than 144 characters!')
         .required('Required'),
-    tag: Yup.string()
-        .max(50, 'No more than 50 characters'),
 });
 
-export default function CreateTweetForm({ onCreateComplete }) {
+export default function EditTweetForm({ onEditComplete, tweet }) {
     const { username } = useAuthUser();
 
+    const initFormValues = {
+        text: tweet.text,
+    };
+
     const onSubmit = async (values, actions) => {
-        var req = new Request(`write/api/v1.0/tweets/${username}/add`, {
-            method: 'POST',
+        var req = new Request(`write/api/v1.0/tweets/${username}/update/${tweet.id}`, {
+            method: 'PUT',
             body: JSON.stringify({
-                text: values.text,
-                tag: values.tag
+                text: values.text
             }),
             headers: new Headers({
                 "X-CSRF": "1",
@@ -37,13 +38,10 @@ export default function CreateTweetForm({ onCreateComplete }) {
                 await resp.json();
 
                 actions.resetForm({
-                    values: {
-                        text: '',
-                        tag: '',
-                    },
+                    values: initFormValues,
                 });
 
-                onCreateComplete();
+                onEditComplete();
             }
         } catch (e) {
             console.log("error calling remote API");
@@ -52,10 +50,7 @@ export default function CreateTweetForm({ onCreateComplete }) {
 
     return (
         <Formik
-            initialValues={{
-                text: '',
-                tag: '',
-            }}
+            initialValues={initFormValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
         >
@@ -70,22 +65,12 @@ export default function CreateTweetForm({ onCreateComplete }) {
                         </Field>
                         <ErrorMessage name="text" component="div" />
                     </FormGroup>
-                    <FormGroup>
-                        <Field
-                            type="text"
-                            name="tag">
-                            {({ field }) => (
-                                <Input {...field} type="text" placeholder="tag" />
-                            )}
-                        </Field>
-                        <ErrorMessage name="tag" component="div" />
-                    </FormGroup>
                     <Button
                         type="submit"
                         color="primary"
                         outline
                     >
-                        Add
+                        Save
                     </Button>
                     <Button
                         type="reset"
@@ -101,10 +86,14 @@ export default function CreateTweetForm({ onCreateComplete }) {
     );
 }
 
-CreateTweetForm.defaultProps = {
-    onCreateComplete: () => { }
+EditTweetForm.defaultProps = {
+    onEditComplete: () => { }
 };
 
-CreateTweetForm.propTypes = {
-    onCreateComplete: PropTypes.func,
+EditTweetForm.propTypes = {
+    onEditComplete: PropTypes.func,
+    tweet: PropTypes.shape({
+        id: PropTypes.string,
+        text: PropTypes.string
+    }),
 };

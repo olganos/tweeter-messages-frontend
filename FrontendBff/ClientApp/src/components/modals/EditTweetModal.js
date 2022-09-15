@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
-import { CommentIcon } from '@primer/octicons-react'
-import CreateTweetForm from '../tweets/CreateTweetForm';
+import { PencilIcon } from '@primer/octicons-react'
+import EditTweetForm from '../tweets/EditTweetForm';
 
 // todo: there is an error. This is because of library
-export default function CreateTweetModal() {
+export default function EditTweetModal({ tweet }) {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggle = () => setIsOpen(!isOpen);
@@ -19,20 +20,28 @@ export default function CreateTweetModal() {
                 className="me-1"
                 onClick={toggle}
             >
-                <CommentIcon size={16} />
+                <PencilIcon size={16} />
             </Button>
             <Modal
                 isOpen={isOpen}
                 toggle={toggle}
                 backdrop="static"
             >
-                <ModalHeader toggle={toggle}>Add tweet</ModalHeader>
+                <ModalHeader toggle={toggle}>Edit tweet</ModalHeader>
                 <ModalBody>
-                    <CreateTweetForm
+                    <EditTweetForm
                         onCreateComplete={toggle}
+                        tweet={tweet}
                     />
                 </ModalBody>
             </Modal>
         </>
     );
 }
+
+EditTweetModal.propTypes = {
+    tweet: PropTypes.shape({
+        id: PropTypes.string,
+        text: PropTypes.string
+    }),
+};

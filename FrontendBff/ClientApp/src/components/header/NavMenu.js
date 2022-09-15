@@ -24,8 +24,6 @@ export default function Header() {
         <CreateTweetModal />
         <SearchUser />
         <Nav className="d-flex flex-row">
-          {/* on the main page show user name, user's tweets and a form for a new tweet */}
-          {/* if not athenticated, redirect to identity server */}
           <NavItem className="me-3">
             <NavLink
               to="/all-users"
@@ -37,7 +35,7 @@ export default function Header() {
           </NavItem>
           <NavItem>
             <NavLink
-              to="/all-tweets" //todo: Tweets (all, but rectrict somehow - by pages of load dinamically)
+              to="/all-tweets"
               style={getNavStyle}
               end
             >
