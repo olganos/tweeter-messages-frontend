@@ -1,6 +1,5 @@
-import { useRef } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { Navbar, NavbarBrand, Nav, NavItem, Input, InputGroup, Button } from 'reactstrap';
+import { NavLink, Link } from 'react-router-dom';
+import { Navbar, NavbarBrand, Nav, NavItem } from 'reactstrap';
 import styles from './NavMenu.module.scss';
 import SearchUser from './SearchUser';
 import UserInfo from './UserInfo';

@@ -28,6 +28,11 @@ export default function Tweet({ data }) {
             <p>
                 {data.text}
             </p>
+            {data.tag &&
+                <p>
+                    #{data.tag}
+                </p>
+            }
         </>
     )
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
+import CreateTweetForm from '../../components/tweets/CreateTweetForm';
 
 export default function AllTweetsPage() {
     const [read, setRead] = useState([]);
@@ -36,6 +37,9 @@ export default function AllTweetsPage() {
             <h1>All tweets</h1>
             <Row>
                 <Col>
+                    <p>
+                        <CreateTweetForm />
+                    </p>
                     <TweetList data={read} />
                 </Col>
                 <Col>

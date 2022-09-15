@@ -47,7 +47,12 @@ export default function TweetFullView() {
             <p>
                 {tweet.text}
             </p>
-            {tweet.replies &&
+            {tweet.tag &&
+                <p>
+                    #{tweet.tag}
+                </p>
+            }
+            {(tweet.replies && tweet.replies.length != 0) &&
                 <>
                     <p>
                         Replies:
