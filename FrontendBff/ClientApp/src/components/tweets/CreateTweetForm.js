@@ -1,5 +1,7 @@
 import React, { } from 'react';
-import { Input, FormGroup, Button, Card, CardHeader, CardBody } from 'reactstrap';
+import PropTypes from 'prop-types';
+
+import { Input, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuthUser } from '../../services/authService';
@@ -12,7 +14,7 @@ const validationSchema = Yup.object().shape({
         .max(50, 'No more than 50 characters'),
 });
 
-export default function CreateTweetForm() {
+export default function CreateTweetForm({ onCreateComplete }) {
     const { username } = useAuthUser();
 
     const onSubmit = async (values, actions) => {
@@ -33,76 +35,78 @@ export default function CreateTweetForm() {
         try {
             var resp = await fetch(req);
 
-            let data;
             if (resp.ok) {
-                data = await resp.json();
+                await resp.json();
+
+                actions.resetForm({
+                    values: {
+                        text: '',
+                        tag: '',
+                    },
+                });
+
+                onCreateComplete();
             }
-            actions.resetForm({
-                values: {
-                    text: '',
-                    tag: '',
-                },
-            });
         } catch (e) {
             console.log("error calling remote API");
         }
     }
 
     return (
-        <Card>
-            <CardHeader>
-                Add your tweet
-            </CardHeader>
-            <CardBody>
-                <Formik
-                    initialValues={{
-                        text: '',
-                        tag: '',
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={onSubmit}
-                >
-                    {({ }) => (
-                        <Form>
-                            <FormGroup>
-                                <Field
-                                    name="text">
-                                    {({ field }) => (
-                                        <Input {...field} type="textarea" placeholder="text" />
-                                    )}
-                                </Field>
-                                <ErrorMessage name="text" component="div" />
-                            </FormGroup>
-                            <FormGroup>
-                                <Field
-                                    type="text"
-                                    name="tag">
-                                    {({ field }) => (
-                                        <Input {...field} type="text" placeholder="tag" />
-                                    )}
-                                </Field>
-                                <ErrorMessage name="tag" component="div" />
-                            </FormGroup>
-                            <Button
-                                type="submit"
-                                color="primary"
-                                //disabled={isSubmitting}
-                                outline
-                            >
-                                Add
-                            </Button>
-                            <Button
-                                type="reset"
-                                color="primary"
-                                className="ms-3"
-                                outline
-                            >
-                                Cancel
-                            </Button>
-                        </Form>
-                    )}
-                </Formik>
-            </CardBody>
-        </Card>
+        <Formik
+            initialValues={{
+                text: '',
+                tag: '',
+            }}
+            validationSchema={validationSchema}
+            onSubmit={onSubmit}
+        >
+            {({ }) => (
+                <Form>
+                    <FormGroup>
+                        <Field
+                            name="text">
+                            {({ field }) => (
+                                <Input {...field} type="textarea" placeholder="text" />
+                            )}
+                        </Field>
+                        <ErrorMessage name="text" component="div" />
+                    </FormGroup>
+                    <FormGroup>
+                        <Field
+                            type="text"
+                            name="tag">
+                            {({ field }) => (
+                                <Input {...field} type="text" placeholder="tag" />
+                            )}
+                        </Field>
+                        <ErrorMessage name="tag" component="div" />
+                    </FormGroup>
+                    <Button
+                        type="submit"
+                        color="primary"
+                        outline
+                    >
+                        Add
+                    </Button>
+                    <Button
+                        type="reset"
+                        color="primary"
+                        className="ms-3"
+                        outline
+                    >
+                        Cancel
+                    </Button>
+                </Form>
+            )}
+        </Formik>
     );
 }
+
+CreateTweetForm.defaultProps = {
+    onCreateComplete: () => { }
+};
+
+CreateTweetForm.propTypes = {
+    onCreateComplete: PropTypes.func,
+};

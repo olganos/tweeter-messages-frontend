@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row } from 'reactstrap';
-import CreateTweetForm from '../../components/tweets/CreateTweetForm';
 import TweetList from '../../components/tweets/TweetList';
 import { useAuthUser } from '../../services/authService';
 
@@ -39,11 +38,11 @@ export default function Index() {
 
     return (
         <>
-            <h1>Your {userTweets.length} tweets</h1>
+            <h1>Your {userTweets?.length ?? ''} tweets</h1>
             <Row>
                 <Col>
                     <div className="mb-2">
-                        <CreateTweetForm />
+                        {/* <CreateTweetForm /> */}
                     </div>
                     <TweetList
                         data={userTweets}

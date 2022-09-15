@@ -33,7 +33,7 @@ export default function OneUserPage() {
 
     return (
         <>
-            <h1>@{userName}'s {userTweets.length} tweets</h1>
+            <h1>@{userName}'s {userTweets?.length ?? ''} tweets</h1>
             <Row>
                 <Col>
                     <TweetList
