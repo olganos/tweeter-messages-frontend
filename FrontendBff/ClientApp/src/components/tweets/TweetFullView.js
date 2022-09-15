@@ -53,11 +53,11 @@ export default function TweetFullView() {
                     #{tweet.tag}
                 </p>
             }
-            <p>
+            <div className="mb-2">
                 <CreateReplyForm
                     tweetId={tweetId}
                 />
-            </p>
+            </div>
             {(tweet.replies && tweet.replies.length != 0) &&
                 <>
                     <p>

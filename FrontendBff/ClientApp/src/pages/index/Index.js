@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
-import TweetList from '../../components/tweets/TweetList';
 import CreateTweetForm from '../../components/tweets/CreateTweetForm';
+import TweetList from '../../components/tweets/TweetList';
+import { useAuthUser } from '../../services/authService';
 
-export default function AllTweetsPage() {
-    const [tweets, setTweets] = useState([]);
+export default function Index() {
+    // todo: take username from the global state
+    const { username, isLoading } = useAuthUser();
+    const [userTweets, setUserTweets] = useState([]);
 
     const readApi = async () => {
-        var req = new Request("read/api/v1.0/tweets/all", {
+        var req = new Request(`read/api/v1.0/tweets/${username}`, {
             headers: new Headers({
                 "X-CSRF": "1",
             }),
@@ -21,7 +23,7 @@ export default function AllTweetsPage() {
             if (resp.ok) {
                 data = await resp.json();
             }
-            setTweets(data);
+            setUserTweets(data);
         } catch (e) {
             console.log("error calling remote API");
         }
@@ -29,20 +31,24 @@ export default function AllTweetsPage() {
 
     useEffect(() => {
         readApi();
-    }, []);
+    }, [username]);
+
+
+    if (isLoading)
+        return <div>Loading...</div>
 
     return (
         <>
-            <h1>All {tweets.length} tweets</h1>
+            <h1>Your {userTweets.length} tweets</h1>
             <Row>
                 <Col>
                     <div className="mb-2">
                         <CreateTweetForm />
                     </div>
-                    <TweetList data={tweets} />
-                </Col>
-                <Col>
-                    <Outlet />
+                    <TweetList
+                        data={userTweets}
+                        showUserUri={true}
+                    />
                 </Col>
             </Row>
         </>

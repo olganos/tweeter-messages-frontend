@@ -14,6 +14,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function CreateReplyForm({ tweetId }) {
+    // todo: take username from the global state
     const { username } = useAuthUser();
 
     const onSubmit = async (values, actions) => {
