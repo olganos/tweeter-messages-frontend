@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Moment from 'react-moment';
 import ReplyList from './reply/ReplyList';
+import CreateReplyForm from './reply/CreateReplyForm';
 
 export default function TweetFullView() {
     const { tweetId } = useParams();
@@ -52,6 +53,11 @@ export default function TweetFullView() {
                     #{tweet.tag}
                 </p>
             }
+            <p>
+                <CreateReplyForm
+                    tweetId={tweetId}
+                />
+            </p>
             {(tweet.replies && tweet.replies.length != 0) &&
                 <>
                     <p>
