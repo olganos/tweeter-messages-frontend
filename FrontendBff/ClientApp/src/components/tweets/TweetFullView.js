@@ -4,10 +4,34 @@ import Moment from 'react-moment';
 import ReplyList from './reply/ReplyList';
 import CreateReplyForm from './reply/CreateReplyForm';
 import EditTweetModal from '../modals/EditTweetModal';
+import { TrashIcon } from '@primer/octicons-react'
+import { Button } from 'reactstrap';
 
 export default function TweetFullView() {
     const { tweetId } = useParams();
     const [tweet, setTweet] = useState({});
+
+    const onDelete = async () => {
+        // todo: show confirmation
+
+        var req = new Request(`write/api/v1.0/tweets/${tweet.userName}/delete/${tweet.id}`, {
+            method: 'DELETE',
+            headers: new Headers({
+                "X-CSRF": "1",
+            }),
+        });
+
+        try {
+            var resp = await fetch(req);
+
+            if (resp.ok) {
+                await resp.json();
+                // todo: show empty place
+            }
+        } catch (e) {
+            console.log("error calling remote API");
+        }
+    }
 
     const readApi = async () => {
         var req = new Request("read/api/v1.0/tweets/all", {
@@ -34,6 +58,10 @@ export default function TweetFullView() {
         readApi();
     }, [tweetId]);
 
+    if (!tweet) {
+        return null;
+    }
+
     return (
         <>
             <div
@@ -44,6 +72,15 @@ export default function TweetFullView() {
                     <EditTweetModal
                         tweet={tweet}
                     />
+                    <Button
+                        color="primary"
+                        outline
+                        size="sm"
+                        className="me-1"
+                        onClick={onDelete}
+                    >
+                        <TrashIcon size={16} />
+                    </Button>
                 </div>
             </div>
             <div>
