@@ -8,6 +8,26 @@ export default function Tweet({ data, showUserUri }) {
     if (!data)
         return;
 
+    const onClick = async () => {
+        var req = new Request(`write/api/v1.0/tweets/${data.userName}/like/${data.id}`, {
+            method: 'PUT',
+            headers: new Headers({
+                "X-CSRF": "1",
+                'Content-Type': 'application/json',
+            }),
+        });
+
+        try {
+            var resp = await fetch(req);
+
+            if (resp.ok) {
+                await resp.json();
+            }
+        } catch (e) {
+            console.log("error calling remote API");
+        }
+    }
+    
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -16,12 +36,17 @@ export default function Tweet({ data, showUserUri }) {
                 >
                     {data.id}
                 </Link>
-                <div>
+                <div>                    
                     <Button
                         color="primary"
                         outline
                         size="sm"
+                        onClick={onClick}
                     >
+                        {data.likes === 0
+                            ? ''
+                            : <span className="me-2">{data.likes}</span>
+                        }
                         <HeartIcon size={16} />
                     </Button>
                 </div>
