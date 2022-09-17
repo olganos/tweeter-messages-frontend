@@ -61,6 +61,32 @@ export const getAllUsers = () => {
     }
 }
 
+export const searchByUser = (userName) => {
+    return async (dispatch) => {
+        const fetchData = async () => {
+            const response = await fetch(`read/api/v1.0/tweets/user/search/${userName}`, {
+                headers: new Headers({
+                    "X-CSRF": "1",
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not fetch tweets!');
+            }
+
+            const data = await response.json();
+
+            return data;
+        };
+
+        try {
+            const usersData = await fetchData();
+            dispatch(tweetsActions.renewAllUsers({ users: usersData }));
+        } catch (error) {
+            //todo: show error
+        }
+    }
+}
 
 export const getUserTweets = (userName) => {
     return async (dispatch) => {

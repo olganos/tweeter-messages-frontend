@@ -1,34 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import UserList from '../../components/users/UserList';
+import { searchByUser } from '../../services/tweets-service';
 
 export default function SearchUsersPage() {
-    const [users, setUsers] = useState([]);
     const { userName } = useParams();
 
-    useEffect(() => {
-        usersApi();
-    }, [userName]);
+    const dispatch = useDispatch();
+    const users = useSelector((state) => state.tweets.allUsers);
 
-    const usersApi = async () => {
-        var req = new Request(`read/api/v1.0/tweets/user/search/${userName}`, {
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-            setUsers(data);
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
+    useEffect(() => { dispatch(searchByUser(userName)) }, [userName]);
 
     return (
         <>
