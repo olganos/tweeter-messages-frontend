@@ -1,10 +1,12 @@
 import React, { } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import { Input, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuthUser } from '../../services/authService';
+import { editTweet } from '../../services/tweets-service';
 
 const validationSchema = Yup.object().shape({
     text: Yup.string()
@@ -15,37 +17,22 @@ const validationSchema = Yup.object().shape({
 export default function EditTweetForm({ onEditComplete, tweet }) {
     const { username } = useAuthUser();
 
+    const dispatch = useDispatch();
+
     const initFormValues = {
         text: tweet.text,
     };
 
     const onSubmit = async (values, actions) => {
-        var req = new Request(`write/api/v1.0/tweets/${username}/update/${tweet.id}`, {
-            method: 'PUT',
-            body: JSON.stringify({
-                text: values.text
-            }),
-            headers: new Headers({
-                "X-CSRF": "1",
-                'Content-Type': 'application/json',
-            }),
-        });
 
-        try {
-            var resp = await fetch(req);
-
-            if (resp.ok) {
-                await resp.json();
-
-                actions.resetForm({
-                    values: initFormValues,
-                });
-
+        dispatch(editTweet(
+            values,
+            username,
+            tweet.id,            
+            () => {
                 onEditComplete();
-            }
-        } catch (e) {
-            console.log("error calling remote API");
-        }
+            })
+        );
     }
 
     return (

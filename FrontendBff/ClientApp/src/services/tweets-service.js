@@ -117,7 +117,7 @@ export const getUserTweets = (userName) => {
 
 export const createTweet = (newTweet, userName, successFunction) => {
     return async (dispatch) => {
-        const fetchData = async () => {
+        const callApi = async () => {
             const response = await fetch(`write/api/v1.0/tweets/${userName}/add`, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -140,8 +140,41 @@ export const createTweet = (newTweet, userName, successFunction) => {
         };
 
         try {
-            const tweetsData = await fetchData();
+            const tweetsData = await callApi();
             dispatch(tweetsActions.addTweet({ tweet: tweetsData }));
+            successFunction();
+        } catch (error) {
+            //todo: show error
+        }
+    }
+}
+
+export const editTweet = (editedTweet, userName, tweetId, successFunction) => {
+    return async (dispatch) => {
+        const callApi = async () => {
+            const response = await fetch(`write/api/v1.0/tweets/${userName}/update/${tweetId}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    text: editedTweet.text
+                }),
+                headers: new Headers({
+                    "X-CSRF": "1",
+                    'Content-Type': 'application/json',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not update the tweet!');
+            }
+        };
+
+        try {
+            await callApi();
+            dispatch(tweetsActions.editTweet({
+                tweet: {
+                    text: editedTweet.text,
+                    id: tweetId,
+            } }));
             successFunction();
         } catch (error) {
             //todo: show error

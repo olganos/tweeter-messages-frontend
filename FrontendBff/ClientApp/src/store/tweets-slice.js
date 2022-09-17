@@ -39,6 +39,27 @@ const tweetsSlice = createSlice({
                 { ...newTweet },
                 ...state.userTweets];
             state.userTweetsQuantity++;
+        },
+        editTweet(state, action) {
+            const editedTweet = action.payload.tweet;
+
+            if (state.oneTweet && state.oneTweet.id === editedTweet.id) {
+                state.oneTweet.text = editedTweet.text;
+            }
+
+            const oneOfAllTweets = state.allTweets
+                .find(tweet => tweet.id === editedTweet.id);
+
+            if (oneOfAllTweets) {
+                oneOfAllTweets.text = editedTweet.text;
+            }
+
+            const oneOfUserTweets = state.userTweets
+                .find(tweet => tweet.id === editedTweet.id);
+
+            if (oneOfUserTweets) {
+                oneOfUserTweets.text = editedTweet.text;
+            }
         }
     },
 });

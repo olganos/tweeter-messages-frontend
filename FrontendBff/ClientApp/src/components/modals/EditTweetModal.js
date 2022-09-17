@@ -30,7 +30,7 @@ export default function EditTweetModal({ tweet }) {
                 <ModalHeader toggle={toggle}>Edit tweet</ModalHeader>
                 <ModalBody>
                     <EditTweetForm
-                        onCreateComplete={toggle}
+                        onEditComplete={toggle}
                         tweet={tweet}
                     />
                 </ModalBody>
