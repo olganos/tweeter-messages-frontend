@@ -1,33 +1,21 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import Moment from 'react-moment';
 import { Button } from 'reactstrap';
-import { HeartIcon } from '@primer/octicons-react'
+import { HeartIcon } from '@primer/octicons-react';
+import { likeTweet } from '../../services/tweets-service';
 
 export default function Tweet({ data, showUserUri }) {
+    const dispatch = useDispatch();
+
+    const onClick = async () => {
+        dispatch(likeTweet(data.userName, data.id));
+    }
+
     if (!data)
         return;
 
-    const onClick = async () => {
-        var req = new Request(`write/api/v1.0/tweets/${data.userName}/like/${data.id}`, {
-            method: 'PUT',
-            headers: new Headers({
-                "X-CSRF": "1",
-                'Content-Type': 'application/json',
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            if (resp.ok) {
-                await resp.json();
-            }
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
-    
     return (
         <>
             <div className="d-flex justify-content-between">
@@ -36,7 +24,7 @@ export default function Tweet({ data, showUserUri }) {
                 >
                     {data.id}
                 </Link>
-                <div>                    
+                <div>
                     <Button
                         color="primary"
                         outline
@@ -52,7 +40,7 @@ export default function Tweet({ data, showUserUri }) {
                 </div>
             </div>
             <div>
-                @{data.userName}                
+                @{data.userName}
             </div>
             <div>
                 posted at

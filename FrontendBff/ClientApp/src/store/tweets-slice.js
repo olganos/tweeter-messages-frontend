@@ -74,6 +74,23 @@ const tweetsSlice = createSlice({
                 state.oneTweet = null;
             }
         },
+        likeTweet(state, action) {
+            const tweetId = action.payload.tweetId;
+
+            const oneOfAllTweets = state.allTweets
+                .find(tweet => tweet.id === tweetId);
+
+            if (oneOfAllTweets) {
+                oneOfAllTweets.likes++;
+            }
+
+            const oneOfUserTweets = state.userTweets
+                .find(tweet => tweet.id === tweetId);
+
+            if (oneOfUserTweets) {
+                oneOfUserTweets.likes++;
+            }
+        },
     },
 });
 

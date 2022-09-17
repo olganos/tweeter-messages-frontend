@@ -24,7 +24,6 @@ export default function EditTweetForm({ onEditComplete, tweet }) {
     };
 
     const onSubmit = async (values) => {
-
         dispatch(editTweet(
             values,
             username,

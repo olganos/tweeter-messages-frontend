@@ -194,7 +194,7 @@ export const deleteTweet = (userName, tweetId, successFunction) => {
             });
 
             if (!response.ok) {
-                throw new Error('Could not update the tweet!');
+                throw new Error('Could not delete the tweet!');
             }
         };
 
@@ -202,6 +202,31 @@ export const deleteTweet = (userName, tweetId, successFunction) => {
             await callApi();
             dispatch(tweetsActions.deleteTweet({ tweetId }));
             successFunction();
+        } catch (error) {
+            //todo: show error
+        }
+    }
+}
+
+export const likeTweet = (userName, tweetId) => {
+    return async (dispatch) => {
+        const callApi = async () => {
+            const response = await fetch(`write/api/v1.0/tweets/${userName}/like/${tweetId}`, {
+                method: 'PUT',
+                headers: new Headers({
+                    "X-CSRF": "1",
+                    'Content-Type': 'application/json',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not like the tweet!');
+            }
+        };
+
+        try {
+            await callApi();
+            dispatch(tweetsActions.likeTweet({ tweetId }));
         } catch (error) {
             //todo: show error
         }
