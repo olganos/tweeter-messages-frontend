@@ -1,41 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
+//import { tweetsActions } from '../../store/tweets-slice';
+import { getAllTweets } from '../../services/tweets-service';
 
 export default function AllTweetsPage() {
-    const [tweets, setTweets] = useState([]);
+    const dispatch = useDispatch();
+    const allTweets = useSelector((state) => state.tweets.allTweets);
+    const allTweetsQuantity = useSelector((state) => state.tweets.allTweetsQuantity);
 
-    const readApi = async () => {
-        var req = new Request("read/api/v1.0/tweets/all", {
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-            setTweets(data);
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
-
-    useEffect(() => {
-        readApi();
-    }, []);
+    useEffect(() => { dispatch(getAllTweets()); }, []);
 
     return (
         <>
-            <h1>All {tweets?.length ?? ''} tweets</h1>
+            <h1>All {allTweetsQuantity} tweets</h1>
             <Row>
                 <Col>
-                    <TweetList data={tweets} />
+                    <TweetList data={allTweets} />
                 </Col>
                 <Col>
                     <Outlet />
