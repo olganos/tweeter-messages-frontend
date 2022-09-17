@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useLinkClickHandler } from 'react-router-dom';
 
 const tweetsSlice = createSlice({
     name: 'tweets',
@@ -6,7 +7,7 @@ const tweetsSlice = createSlice({
         allTweets: [],
         allTweetsQuantity: 0,
         userTweets: [],
-        allUserTweetsQuantity: 0,
+        userTweetsQuantity: 0,
         oneTweet: null,
         allUsers: [],
     },
@@ -23,42 +24,22 @@ const tweetsSlice = createSlice({
         },
         renewUserTweets(state, action) {
             state.userTweets = action.payload.tweets;
-            state.allUserTweetsQuantity = action.payload.tweets.length;
+            state.userTweetsQuantity = action.payload.tweets.length;
         },
-        // replaceCart(state, action) {
-        //     state.totalQuantity = action.payload.totalQuantity;
-        //     state.items = action.payload.items;
-        // },
-        // addItemToCart(state, action) {
-        //     const newItem = action.payload;
-        //     const existingItem = state.items.find((item) => item.id === newItem.id);
-        //     state.totalQuantity++;
-        //     state.changed = true;
-        //     if (!existingItem) {
-        //         state.items.push({
-        //             id: newItem.id,
-        //             price: newItem.price,
-        //             quantity: 1,
-        //             totalPrice: newItem.price,
-        //             name: newItem.title,
-        //         });
-        //     } else {
-        //         existingItem.quantity++;
-        //         existingItem.totalPrice = existingItem.totalPrice + newItem.price;
-        //     }
-        // },
-        // removeItemFromCart(state, action) {
-        //     const id = action.payload;
-        //     const existingItem = state.items.find((item) => item.id === id);
-        //     state.totalQuantity--;
-        //     state.changed = true;
-        //     if (existingItem.quantity === 1) {
-        //         state.items = state.items.filter((item) => item.id !== id);
-        //     } else {
-        //         existingItem.quantity--;
-        //         existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
-        //     }
-        // },
+        addTweet(state, action) {
+            const newTweet = action.payload.tweet;
+            newTweet.likes = 0;
+
+            state.allTweets = [
+                { ...newTweet },
+                ...state.allTweets];
+            state.allTweetsQuantity++;
+
+            state.userTweets = [
+                { ...newTweet },
+                ...state.userTweets];
+            state.userTweetsQuantity++;
+        }
     },
 });
 

@@ -11,9 +11,9 @@ export default function Index() {
 
     const dispatch = useDispatch();
     const userTweets = useSelector((state) => state.tweets.userTweets);
-    const allUserTweetsQuantity = useSelector((state) => state.tweets.allUserTweetsQuantity);
+    const userTweetsQuantity = useSelector((state) => state.tweets.userTweetsQuantity);
 
-    useEffect(() => { dispatch(getUserTweets(username)); }, []);
+    useEffect(() => { dispatch(getUserTweets(username)); }, [username]);
 
 
     if (isLoading)
@@ -21,7 +21,7 @@ export default function Index() {
 
     return (
         <>
-            <h1>Your {allUserTweetsQuantity} tweets</h1>
+            <h1>Your {userTweetsQuantity} tweets</h1>
             <Row>
                 <Col>
                     <div className="mb-2">

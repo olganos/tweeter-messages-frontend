@@ -10,13 +10,13 @@ export default function OneUserPage() {
 
     const dispatch = useDispatch();
     const userTweets = useSelector((state) => state.tweets.userTweets);
-    const allUserTweetsQuantity = useSelector((state) => state.tweets.allUserTweetsQuantity);
+    const userTweetsQuantity = useSelector((state) => state.tweets.userTweetsQuantity);
 
     useEffect(() => { dispatch(getUserTweets(userName)); }, []);
 
     return (
         <>
-            <h1>@{userName}'s {allUserTweetsQuantity} tweets</h1>
+            <h1>@{userName}'s {userTweetsQuantity} tweets</h1>
             <Row>
                 <Col>
                     <TweetList
