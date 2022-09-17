@@ -20,6 +20,11 @@ export default function Reply({ data }) {
             <p>
                 {data.text}
             </p>
+            {data.tag &&
+                <p>
+                    #{data.tag}
+                </p>
+            }
         </>
     )
 }

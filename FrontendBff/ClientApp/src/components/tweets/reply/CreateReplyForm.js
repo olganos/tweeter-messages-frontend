@@ -1,9 +1,11 @@
 import React, { } from 'react';
 import PropTypes from 'prop-types';
-import { Input, FormGroup, Button, Card, CardHeader, CardBody, CardSubtitle } from 'reactstrap';
+import { useDispatch } from 'react-redux';
+import { Input, FormGroup, Button, Card, CardBody, CardSubtitle } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useAuthUser } from '../../../services/authService';
+import { addReply } from '../../../services/tweets-service';
 
 const validationSchema = Yup.object().shape({
     text: Yup.string()
@@ -17,36 +19,23 @@ export default function CreateReplyForm({ tweetId }) {
     // todo: take username from the global state
     const { username } = useAuthUser();
 
+    const dispatch = useDispatch();
+
     const onSubmit = async (values, actions) => {
-        console.log(values);
-        var req = new Request(`write/api/v1.0/tweets/${username}/reply/${tweetId}`, {
-            method: 'POST',
-            body: JSON.stringify({
-                text: values.text,
-                tag: values.tag
-            }),
-            headers: new Headers({
-                "X-CSRF": "1",
-                'Content-Type': 'application/json',
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-            actions.resetForm({
-                values: {
-                    text: '',
-                    tag: '',
-                },
-            });
-        } catch (e) {
-            console.log("error calling remote API");
-        }
+        
+        dispatch(addReply(
+            values,
+            username,
+            tweetId,
+            () => {
+                actions.resetForm({
+                    values: {
+                        text: '',
+                        tag: '',
+                    },
+                });
+            })
+        );
     }
 
     return (

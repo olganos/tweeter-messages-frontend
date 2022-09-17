@@ -232,3 +232,37 @@ export const likeTweet = (userName, tweetId) => {
         }
     }
 }
+
+export const addReply = (newReply, userName, tweetId, successFunction) => {
+    return async (dispatch) => {
+        const callApi = async () => {
+            const response = await fetch(`write/api/v1.0/tweets/${userName}/reply/${tweetId}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    text: newReply.text,
+                    tag: newReply.tag
+                }),
+                headers: new Headers({
+                    "X-CSRF": "1",
+                    'Content-Type': 'application/json',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not add reply!');
+            }
+
+            const data = await response.json();
+
+            return data;
+        };
+
+        try {
+            const replyData = await callApi();
+            dispatch(tweetsActions.addReply({ reply: replyData, tweetId }));
+            successFunction();
+        } catch (error) {
+            //todo: show error
+        }
+    }
+}

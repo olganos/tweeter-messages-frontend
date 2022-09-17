@@ -91,6 +91,34 @@ const tweetsSlice = createSlice({
                 oneOfUserTweets.likes++;
             }
         },
+        addReply(state, action) {
+            const newReply = action.payload.reply;
+            const tweetId = action.payload.tweetId;
+
+            if (state.oneTweet && state.oneTweet.id === tweetId) {
+                state.oneTweet.replies = [
+                    { ...newReply },
+                    ...state.oneTweet.replies];
+            }
+
+            const oneOfAllTweets = state.allTweets
+                .find(tweet => tweet.id === tweetId);
+
+            if (oneOfAllTweets) {
+                oneOfAllTweets.replies = [
+                    { ...newReply },
+                    ...oneOfAllTweets.replies];
+            }
+
+            const oneOfUserTweets = state.userTweets
+                .find(tweet => tweet.id === tweetId);
+
+            if (oneOfUserTweets) {
+                oneOfUserTweets.replies = [
+                    { ...newReply },
+                    ...oneOfUserTweets.replies];
+            }
+        },
     },
 });
 
