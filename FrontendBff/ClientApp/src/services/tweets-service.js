@@ -174,7 +174,33 @@ export const editTweet = (editedTweet, userName, tweetId, successFunction) => {
                 tweet: {
                     text: editedTweet.text,
                     id: tweetId,
-            } }));
+                }
+            }));
+            successFunction();
+        } catch (error) {
+            //todo: show error
+        }
+    }
+}
+
+export const deleteTweet = (userName, tweetId, successFunction) => {
+    return async (dispatch) => {
+        const callApi = async () => {
+            const response = await fetch(`write/api/v1.0/tweets/${userName}/delete/${tweetId}`, {
+                method: 'DELETE',
+                headers: new Headers({
+                    "X-CSRF": "1",
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Could not update the tweet!');
+            }
+        };
+
+        try {
+            await callApi();
+            dispatch(tweetsActions.deleteTweet({ tweetId }));
             successFunction();
         } catch (error) {
             //todo: show error

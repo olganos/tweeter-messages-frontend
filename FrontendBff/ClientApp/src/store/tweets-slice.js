@@ -60,7 +60,20 @@ const tweetsSlice = createSlice({
             if (oneOfUserTweets) {
                 oneOfUserTweets.text = editedTweet.text;
             }
-        }
+        },
+        deleteTweet(state, action) {
+            const tweetId = action.payload.tweetId;
+
+            state.allTweets = state.allTweets.filter(tweet => tweet.id !== tweetId);
+            state.allTweetsQuantity--;
+
+            state.userTweets = state.userTweets.filter(tweet => tweet.id !== tweetId);
+            state.userTweetsQuantity--;
+
+            if (state.oneTweet && state.oneTweet.id === tweetId) {
+                state.oneTweet = null;
+            }
+        },
     },
 });
 

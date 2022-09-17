@@ -23,7 +23,7 @@ export default function EditTweetForm({ onEditComplete, tweet }) {
         text: tweet.text,
     };
 
-    const onSubmit = async (values, actions) => {
+    const onSubmit = async (values) => {
 
         dispatch(editTweet(
             values,

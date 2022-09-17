@@ -1,31 +1,24 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { TrashIcon } from '@primer/octicons-react'
 import { Button, Modal, ModalFooter, ModalBody } from 'reactstrap';
+import { deleteTweet } from '../../services/tweets-service';
 
 export default function DeleteTweet({ tweetId, userName }) {
+    const dispatch = useDispatch();
+
     const [confirmationOpen, setIsConfirmationOpen] = useState(false);
 
     const toggleConfirmation = () => setIsConfirmationOpen(!confirmationOpen);
 
-    const deleteTweet = async () => {
-        var req = new Request(`write/api/v1.0/tweets/${userName}/delete/${tweetId}`, {
-            method: 'DELETE',
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            if (resp.ok) {
-                //await resp.json();
+    const onDeleteTweet = async () => {
+        dispatch(deleteTweet(
+            userName,
+            tweetId,
+            () => {
                 toggleConfirmation();
-            }
-        } catch (e) {
-            console.log("error calling remote API");
-        }
+            }));
     }
 
     return (
@@ -47,7 +40,7 @@ export default function DeleteTweet({ tweetId, userName }) {
                     Are you sure?
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={deleteTweet}>
+                    <Button color="primary" onClick={onDeleteTweet}>
                         Yes
                     </Button>{' '}
                     <Button color="secondary" onClick={toggleConfirmation}>
