@@ -20,6 +20,8 @@ export default function TweetFullView() {
         if (!tweetId) {
             return;
         }
+
+        // todo: improve getting the list of tweets. because it coul be called from all tweets page and from the usr's page as well
         if (allTweetsQuantity === 0) {
             dispatch(getAllTweets());
         }

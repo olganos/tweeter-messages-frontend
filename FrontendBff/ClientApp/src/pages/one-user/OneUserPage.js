@@ -1,39 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
+import { getUserTweets } from '../../services/tweets-service';
 
 export default function OneUserPage() {
     const { userName } = useParams();
-    const [userTweets, setUserTweets] = useState([]);
 
-    const readApi = async () => {
-        var req = new Request(`read/api/v1.0/tweets/${userName}`, {
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
+    const dispatch = useDispatch();
+    const userTweets = useSelector((state) => state.tweets.userTweets);
+    const allUserTweetsQuantity = useSelector((state) => state.tweets.allUserTweetsQuantity);
 
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-            setUserTweets(data);
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
-
-    useEffect(() => {
-        readApi();
-    }, []);
+    useEffect(() => { dispatch(getUserTweets(userName)); }, []);
 
     return (
         <>
-            <h1>@{userName}'s {userTweets?.length ?? ''} tweets</h1>
+            <h1>@{userName}'s {allUserTweetsQuantity} tweets</h1>
             <Row>
                 <Col>
                     <TweetList

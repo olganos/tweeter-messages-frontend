@@ -21,6 +21,10 @@ const tweetsSlice = createSlice({
         renewAllUsers(state, action) {
             state.allUsers = action.payload.users;
         },
+        renewUserTweets(state, action) {
+            state.userTweets = action.payload.tweets;
+            state.allUserTweetsQuantity = action.payload.tweets.length;
+        },
         // replaceCart(state, action) {
         //     state.totalQuantity = action.payload.totalQuantity;
         //     state.items = action.payload.items;
