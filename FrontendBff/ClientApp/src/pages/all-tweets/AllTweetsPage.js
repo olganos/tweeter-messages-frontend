@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { Col, Row } from 'reactstrap';
 import TweetList from '../../components/tweets/TweetList';
-//import { tweetsActions } from '../../store/tweets-slice';
 import { getAllTweets } from '../../services/tweets-service';
 
 export default function AllTweetsPage() {

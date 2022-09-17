@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import Moment from 'react-moment';
 import ReplyList from './reply/ReplyList';
 import CreateReplyForm from './reply/CreateReplyForm';
 import EditTweetModal from '../modals/EditTweetModal';
 import DeleteTweet from './DeleteTweet';
+import { tweetsActions } from '../../store/tweets-slice';
+import { getAllTweets } from '../../services/tweets-service';
 
 export default function TweetFullView() {
     const { tweetId } = useParams();
-    const [tweet, setTweet] = useState({});
-
-    const readApi = async () => {
-        var req = new Request("read/api/v1.0/tweets/all", {
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-
-            setTweet(data.find(item => item.id === tweetId));
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
+    const dispatch = useDispatch();
+    const oneTweet = useSelector((state) => state.tweets.oneTweet);
+    const allTweets = useSelector((state) => state.tweets.allTweets);
+    const allTweetsQuantity = useSelector((state) => state.tweets.allTweetsQuantity);
 
     useEffect(() => {
-        readApi();
-    }, [tweetId]);
+        if (!tweetId) {
+            return;
+        }
+        if (allTweetsQuantity === 0) {
+            dispatch(getAllTweets());
+        }
+        else {
+            const tweet = allTweets.find(tweet => tweet.id === tweetId);
+            dispatch(tweetsActions.getOneTweet({ tweet }));
+        }
+    }, [tweetId, allTweets]);
 
-    if (!tweet) {
+    if (!oneTweet) {
         return null;
     }
 
@@ -44,14 +38,14 @@ export default function TweetFullView() {
             <div
                 className="d-flex justify-content-between"
             >
-                @{tweet.userName}
+                @{oneTweet.userName}
                 <div>
                     <EditTweetModal
-                        tweet={tweet}
+                        tweet={oneTweet}
                     />
                     <DeleteTweet
-                        tweetId={tweet.id}
-                        userName={tweet.userName}
+                        tweetId={oneTweet.id}
+                        userName={oneTweet.userName}
                     />
                 </div>
             </div>
@@ -61,15 +55,15 @@ export default function TweetFullView() {
                 <Moment
                     format="DD.MM.YYYY HH:mm:ss"
                 >
-                    {tweet.created}
+                    {oneTweet.created}
                 </Moment>
             </div>
             <p>
-                {tweet.text}
+                {oneTweet.text}
             </p>
-            {tweet.tag &&
+            {oneTweet.tag &&
                 <p>
-                    #{tweet.tag}
+                    #{oneTweet.tag}
                 </p>
             }
             <div className="mb-2">
@@ -77,12 +71,12 @@ export default function TweetFullView() {
                     tweetId={tweetId}
                 />
             </div>
-            {(tweet.replies && tweet.replies.length != 0) &&
+            {(oneTweet.replies && oneTweet.replies.length != 0) &&
                 <>
                     <p>
                         Replies:
                     </p>
-                    <ReplyList data={tweet.replies} />
+                    <ReplyList data={oneTweet.replies} />
                 </>
             }
         </>
