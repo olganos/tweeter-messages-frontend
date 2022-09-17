@@ -1,33 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import UserList from '../../components/users/UserList';
+import { getAllUsers } from '../../services/tweets-service';
 
 export default function AllUsersPage() {
-    const [users, setUsers] = useState([]);
+    const dispatch = useDispatch();
+    const allUsers = useSelector((state) => state.tweets.allUsers);
 
-    useEffect(() => {
-        usersApi();
-    }, []);
-
-    const usersApi = async () => {
-        var req = new Request("read/api/v1.0/tweets/users/all", {
-            headers: new Headers({
-                "X-CSRF": "1",
-            }),
-        });
-
-        try {
-            var resp = await fetch(req);
-
-            let data;
-            if (resp.ok) {
-                data = await resp.json();
-            }
-            console.log("Remote API Result: " + resp.status, data);
-            setUsers(data);
-        } catch (e) {
-            console.log("error calling remote API");
-        }
-    }
+    useEffect(() => { dispatch(getAllUsers()) }, []);
 
     return (
         <>
@@ -35,7 +15,7 @@ export default function AllUsersPage() {
             <p>
                 Choose a user whose tweets you want to read
             </p>
-            <UserList data={users} />
+            <UserList data={allUsers} />
         </>
     );
 }

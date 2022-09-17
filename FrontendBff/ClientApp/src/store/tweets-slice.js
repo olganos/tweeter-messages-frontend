@@ -7,8 +7,8 @@ const tweetsSlice = createSlice({
         allTweetsQuantity: 0,
         userTweets: [],
         allUserTweetsQuantity: 0,
-        oneTweet: null
-        // changed: false,
+        oneTweet: null,
+        allUsers: [],
     },
     reducers: {
         renewAllTweets(state, action) {
@@ -17,6 +17,9 @@ const tweetsSlice = createSlice({
         },
         getOneTweet(state, action) {
             state.oneTweet = action.payload.tweet;
+        },
+        renewAllUsers(state, action) {
+            state.allUsers = action.payload.users;
         },
         // replaceCart(state, action) {
         //     state.totalQuantity = action.payload.totalQuantity;
