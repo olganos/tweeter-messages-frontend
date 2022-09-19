@@ -32,7 +32,6 @@ function useClaims() {
 
 function useAuthUser() {
 	const { data: claims, isLoading } = useClaims();
-
 	// TODO abstract to function that takes a sid
 	let logoutUrl = claims?.find((claim) => claim.type === 'bff:logout_url');
 	let nameDict =

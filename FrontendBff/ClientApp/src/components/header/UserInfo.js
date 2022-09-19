@@ -1,9 +1,16 @@
-import React from 'react';
-import { useAuthUser } from '../../services/authService';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCredentials } from '../../services/auth-service';
 import styles from './UserInfo.module.scss';
 
 export default function UserInfo() {
-    const { username, logoutUrl, isLoading } = useAuthUser();
+    const dispatch = useDispatch();
+
+    useEffect(() => { dispatch(getCredentials()); }, [dispatch]);
+
+    const userName = useSelector((state) => state.auth.userName);
+    const isLoading = useSelector((state) => state.auth.userInfoLoading);
+    const logoutUrl = useSelector((state) => state.auth.logoutUrl);
 
     if (isLoading)
         return <div>Loading...</div>
@@ -11,7 +18,7 @@ export default function UserInfo() {
     return (
         <div className={`d-flex align-items-center ${styles.userInfo}`}>
             {
-                !username ? (
+                !userName ? (
                     <>
                         <a
                             href="/bff/login"
@@ -28,8 +35,8 @@ export default function UserInfo() {
                     </>
                 ) : (
                     <>
-                        <span>{`Hi, ${username}!`}</span><a
-                            href={logoutUrl?.value}
+                        <span>{`Hi, ${userName}!`}</span><a
+                            href={logoutUrl}
                         >
                             Logout
                         </a>

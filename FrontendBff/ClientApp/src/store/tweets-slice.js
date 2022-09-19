@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { useLinkClickHandler } from 'react-router-dom';
 
 const tweetsSlice = createSlice({
     name: 'tweets',

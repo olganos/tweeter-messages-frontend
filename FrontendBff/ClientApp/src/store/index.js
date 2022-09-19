@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
+import authSlice from './auth-slice';
 
 //import uiSlice from './ui-slice';
 import tweetsSlice from './tweets-slice';
 
 const store = configureStore({
-    // reducer: { ui: uiSlice.reducer, cart: cartSlice.reducer },
-    reducer: { tweets: tweetsSlice.reducer },
+    reducer: {
+        tweets: tweetsSlice.reducer,
+        auth: authSlice.reducer,
+    },
 });
 
 export default store;

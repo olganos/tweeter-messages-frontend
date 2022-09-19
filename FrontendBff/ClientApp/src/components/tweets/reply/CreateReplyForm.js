@@ -21,8 +21,7 @@ export default function CreateReplyForm({ tweetId }) {
 
     const dispatch = useDispatch();
 
-    const onSubmit = async (values, actions) => {
-        
+    const onSubmit = async (values, actions) => {        
         dispatch(addReply(
             values,
             username,
