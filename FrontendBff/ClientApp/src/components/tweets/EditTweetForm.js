@@ -1,11 +1,10 @@
 import React, { } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Input, FormGroup, Button } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useAuthUser } from '../../services/authService';
 import { editTweet } from '../../services/tweets-service';
 
 const validationSchema = Yup.object().shape({
@@ -15,7 +14,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function EditTweetForm({ onEditComplete, tweet }) {
-    const { username } = useAuthUser();
+    const userName = useSelector((state) => state.auth.userName);
 
     const dispatch = useDispatch();
 
@@ -26,7 +25,7 @@ export default function EditTweetForm({ onEditComplete, tweet }) {
     const onSubmit = async (values) => {
         dispatch(editTweet(
             values,
-            username,
+            userName,
             tweet.id,            
             () => {
                 onEditComplete();

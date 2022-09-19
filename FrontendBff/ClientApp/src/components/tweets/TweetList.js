@@ -9,7 +9,7 @@ export default function TweetList({ data, showUserUri }) {
             {data.map(item =>
                 <ListGroupItem
                     className="justify-content-between"
-                    key={item.id}
+                    key={item.id ?? (new Date()).getTime()}
                 >
                     <Tweet
                         data={item}

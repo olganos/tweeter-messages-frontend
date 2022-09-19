@@ -9,7 +9,7 @@ export default function ReplyList({ data }) {
             {data.map(item =>
                 <ListGroupItem
                     className="justify-content-between"
-                    key={item.id}
+                    key={item.id ?? (new Date()).getTime()}
                 >
                     <Reply data={item} />
                 </ListGroupItem>

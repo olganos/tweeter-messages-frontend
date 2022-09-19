@@ -1,13 +1,7 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCredentials } from '../../services/auth-service';
+import { useSelector } from 'react-redux';
 import styles from './UserInfo.module.scss';
 
 export default function UserInfo() {
-    const dispatch = useDispatch();
-
-    useEffect(() => { dispatch(getCredentials()); }, [dispatch]);
-
     const userName = useSelector((state) => state.auth.userName);
     const isLoading = useSelector((state) => state.auth.userInfoLoading);
     const logoutUrl = useSelector((state) => state.auth.logoutUrl);

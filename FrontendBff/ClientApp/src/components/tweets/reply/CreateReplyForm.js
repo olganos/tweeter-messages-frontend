@@ -1,10 +1,9 @@
 import React, { } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Input, FormGroup, Button, Card, CardBody, CardSubtitle } from 'reactstrap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { useAuthUser } from '../../../services/authService';
 import { addReply } from '../../../services/tweets-service';
 
 const validationSchema = Yup.object().shape({
@@ -16,15 +15,14 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function CreateReplyForm({ tweetId }) {
-    // todo: take username from the global state
-    const { username } = useAuthUser();
+    const userName = useSelector((state) => state.auth.userName);
 
     const dispatch = useDispatch();
 
     const onSubmit = async (values, actions) => {        
         dispatch(addReply(
             values,
-            username,
+            userName,
             tweetId,
             () => {
                 actions.resetForm({
@@ -77,7 +75,6 @@ export default function CreateReplyForm({ tweetId }) {
                             <Button
                                 type="submit"
                                 color="primary"
-                                //disabled={isSubmitting}
                                 outline
                             >
                                 Add

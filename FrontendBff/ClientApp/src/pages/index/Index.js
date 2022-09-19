@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
-import { Col, Row } from 'reactstrap';
+import { Card, CardBody, CardTitle, Col, Row } from 'reactstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import TweetList from '../../components/tweets/TweetList';
-import { useAuthUser } from '../../services/authService';
 import { getUserTweets } from '../../services/tweets-service';
+import CreateTweetForm from '../../components/tweets/CreateTweetForm';
 
 export default function Index() {
-    // todo: take username from the global state
-    const { username, isLoading } = useAuthUser();
+    const userName = useSelector((state) => state.auth.userName);
+    const isLoading = useSelector((state) => state.auth.userInfoLoading);
 
     const dispatch = useDispatch();
     const userTweets = useSelector((state) => state.tweets.userTweets);
     const userTweetsQuantity = useSelector((state) => state.tweets.userTweetsQuantity);
 
-    useEffect(() => { dispatch(getUserTweets(username)); }, [username]);
-
+    useEffect(() => { dispatch(getUserTweets(userName)); }, [userName]);
 
     if (isLoading)
         return <div>Loading...</div>
@@ -25,7 +24,14 @@ export default function Index() {
             <Row>
                 <Col>
                     <div className="mb-2">
-                        {/* <CreateTweetForm /> */}
+                        <Card>
+                            <CardBody>
+                                <CardTitle>
+                                    Add your tweet
+                                </CardTitle>
+                                <CreateTweetForm />
+                            </CardBody>
+                        </Card>
                     </div>
                     <TweetList
                         data={userTweets}
