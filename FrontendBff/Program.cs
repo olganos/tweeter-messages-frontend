@@ -5,6 +5,7 @@ using Serilog;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Duende.Bff;
+using Microsoft.AspNetCore.Builder;
 
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
@@ -48,6 +49,7 @@ try
             options.Scope.Add("fullname");
             options.SaveTokens = true;
             options.GetClaimsFromUserInfoEndpoint = true;
+            //options.RequireHttpsMetadata = false;
         });
 
     var app = builder.Build();
@@ -81,10 +83,10 @@ try
     {
         endpoints.MapBffManagementEndpoints();
 
-        endpoints.MapRemoteBffApiEndpoint("/write", "https://localhost:5050/write")
+        endpoints.MapRemoteBffApiEndpoint("/write", builder.Configuration.GetValue<string>("ApiUrls:Write"))
             .RequireAccessToken(TokenType.User);
 
-        endpoints.MapRemoteBffApiEndpoint("/read", "https://localhost:5050/read")
+        endpoints.MapRemoteBffApiEndpoint("/read", builder.Configuration.GetValue<string>("ApiUrls:Read"))
            .RequireAccessToken(TokenType.User);
     });
 
