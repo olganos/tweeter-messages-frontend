@@ -106,6 +106,10 @@ export const getUserTweets = (userName) => {
             return data;
         };
 
+        if (!userName) {
+            return;
+        }
+
         try {
             const tweetsData = await fetchData();
             dispatch(tweetsActions.renewUserTweets({ tweets: tweetsData }));
