@@ -5,6 +5,7 @@ export default function UserInfo() {
     const userName = useSelector((state) => state.auth.userName);
     const isLoading = useSelector((state) => state.auth.userInfoLoading);
     const logoutUrl = useSelector((state) => state.auth.logoutUrl);
+    const logoinUrl = useSelector((state) => state.auth.logoinUrl);
 
     if (isLoading)
         return <div>Loading...</div>
@@ -15,7 +16,7 @@ export default function UserInfo() {
                 !userName ? (
                     <>
                         <a
-                            href="/bff/login"
+                            href={logoinUrl}
                         >
                             Login
                         </a>

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const LOGGOUT_URL = '/bff/logout';
+const LOGOUT_URL = '/bff/logout';
+const LOGIN_URL = '/bff/login';
 
 const authSlice = createSlice({
     name: 'auth',
@@ -9,7 +10,8 @@ const authSlice = createSlice({
         userName: '',
         isLoggedin: false,
         claims: [],
-        logoutUrl: LOGGOUT_URL,
+        logoutUrl: LOGOUT_URL,
+        loginUrl: LOGIN_URL
     },
     reducers: {
         authenticate(state, action) {
@@ -18,7 +20,7 @@ const authSlice = createSlice({
                 state.userName = '';
                 state.isLoggedin = false;
                 state.claims = [];
-                state.logoutUrl = LOGGOUT_URL;
+                state.logoutUrl = LOGOUT_URL;
             }
             else {
                 const userName = claims.find((claim) => claim.type === 'name')?.value;
@@ -26,7 +28,7 @@ const authSlice = createSlice({
                 state.isLoggedin = !!userName;
                 state.claims = claims;
                 state.logoutUrl = claims.find((claim) => claim.type === 'bff:logout_url')
-                    ?.value ?? LOGGOUT_URL;
+                    ?.value ?? LOGOUT_URL;
             }
         },
         setUserInfoLoading(state, action) {
