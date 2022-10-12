@@ -47,7 +47,6 @@ export default function TweetFullView() {
                     />
                     <DeleteTweet
                         tweetId={oneTweet.id}
-                        userName={oneTweet.userName}
                     />
                 </div>
             </div>
